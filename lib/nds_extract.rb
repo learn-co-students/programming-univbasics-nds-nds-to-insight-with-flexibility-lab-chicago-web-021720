@@ -32,8 +32,10 @@ end
 
 
 # Your code after this point
+require 'pp'
 
 def movies_with_director_key(name, movies_collection)
+  
   # GOAL: For each Hash in an Array (movies_collection), provide a collection
   # of movies and a directors name to the movie_with_director_name method
   # and accumulate the returned Array of movies into a new Array that's
@@ -48,6 +50,13 @@ def movies_with_director_key(name, movies_collection)
   # Array of Hashes where each Hash represents a movie; however, they should all have a
   # :director_name key. This addition can be done by using the provided
   # movie_with_director_name method
+aoh = []
+i = 0 
+while i < movies_collection.length do 
+  aoh << movie_with_director_name(name, movies_collection[i])
+  i += 1 
+end
+aoh
 end
 
 
@@ -63,6 +72,20 @@ def gross_per_studio(collection)
   #
   # Hash whose keys are the studio names and whose values are the sum
   # total of all the worldwide_gross numbers for every movie in the input Hash
+  
+hash = {}
+i = 0 
+while i < collection.length do 
+  title = collection[i][:studio]
+  gross = collection[i][:worldwide_gross]
+  if !hash[title]
+    hash[title] = gross
+  else 
+    hash[title] += gross 
+  end
+  i += 1 
+end 
+hash 
 end
 
 def movies_with_directors_set(source)
@@ -76,7 +99,34 @@ def movies_with_directors_set(source)
   #
   # Array of Arrays containing all of a director's movies. Each movie will need
   # to have a :director_name key added to it.
+  
+  # becomes... [[{:title => "Test", :director_name => "A"}], ...[], ... []]
+
+array = [] 
+i = 0 
+while i < source.length do 
+  n = 0
+  while n < source[i][:movies].length do 
+    hash = {}
+    arr2 = []
+    hash[:director_name] = source[i][:name] 
+    hash[:title] = source[i][:movies][n][:title] 
+    if source[i][:movies][n][:studio]
+      hash[:studio] = source[i][:movies][n][:studio]
+      hash[:worldwide_gross] = source[i][:movies][n][:worldwide_gross]
+    end
+    arr2 << hash 
+    array << arr2 
+    
+    n += 1 
+  end 
+  i += 1 
 end
+array 
+end
+
+
+
 
 # ----------------    End of Your Code Region --------------------
 # Don't edit the following code! Make the methods above work with this method
@@ -87,3 +137,4 @@ def studios_totals(nds)
   movies_with_director_names = flatten_a_o_a(a_o_a_movies_with_director_names)
   return gross_per_studio(movies_with_director_names)
 end
+
