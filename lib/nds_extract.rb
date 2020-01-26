@@ -1,5 +1,6 @@
 # Provided, don't edit
 require 'directors_database'
+require 'pp'
 
 # A method we're giving you. This "flattens"  Arrays of Arrays so: [[1,2],
 # [3,4,5], [6]] => [1,2,3,4,5,6].
@@ -48,6 +49,13 @@ def movies_with_director_key(name, movies_collection)
   # Array of Hashes where each Hash represents a movie; however, they should all have a
   # :director_name key. This addition can be done by using the provided
   # movie_with_director_name method
+  movie_array = []
+  movie_index = 0
+  while movie_index < movies_collection.length do
+    movie_array << movie_with_director_name(name, movies_collection[movie_index])
+    movie_index += 1
+  end
+  movie_array
 end
 
 
@@ -63,6 +71,17 @@ def gross_per_studio(collection)
   #
   # Hash whose keys are the studio names and whose values are the sum
   # total of all the worldwide_gross numbers for every movie in the input Hash
+  studio_hash = {}
+  movie_index = 0
+  while movie_index < collection.length do
+    if studio_hash[collection[movie_index][:studio]]
+      studio_hash[collection[movie_index][:studio]] += collection[movie_index][:worldwide_gross]
+    else
+      studio_hash[collection[movie_index][:studio]] = collection[movie_index][:worldwide_gross]
+    end
+    movie_index += 1
+  end
+  studio_hash
 end
 
 def movies_with_directors_set(source)
@@ -76,6 +95,20 @@ def movies_with_directors_set(source)
   #
   # Array of Arrays containing all of a director's movies. Each movie will need
   # to have a :director_name key added to it.
+  director_array = []
+  director_index = 0
+  while director_index < source.length do
+    movie_array = []
+    movie_index = 0
+    while movie_index < source[director_index][:movies].length do
+      movie_array << source[director_index][:movies][movie_index]
+      movie_index += 1
+    end
+    movie_array_with_names = movies_with_director_key(source[director_index][:name], movie_array)
+    director_array << movie_array_with_names
+    director_index += 1
+  end
+  director_array
 end
 
 # ----------------    End of Your Code Region --------------------
