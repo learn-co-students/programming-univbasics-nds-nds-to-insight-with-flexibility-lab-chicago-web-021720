@@ -21,6 +21,7 @@ def flatten_a_o_a(aoa)
 end
 
 def movie_with_director_name(director_name, movie_data)
+#pp movie_data
   { 
     :title => movie_data[:title],
     :worldwide_gross => movie_data[:worldwide_gross],
@@ -33,7 +34,17 @@ end
 
 # Your code after this point
 
+
 def movies_with_director_key(name, movies_collection)
+
+  array = []
+  for i in movies_collection
+    array.push movie_with_director_name(name, i)
+  end
+  #pp array
+  return array
+
+  
   # GOAL: For each Hash in an Array (movies_collection), provide a collection
   # of movies and a directors name to the movie_with_director_name method
   # and accumulate the returned Array of movies into a new Array that's
@@ -52,6 +63,69 @@ end
 
 
 def gross_per_studio(collection)
+
+studio_gross=Hash.new
+for i in collection
+  info=i
+  studio=info[:studio]
+  studio_gross[studio]=0
+end
+#pp studio_gross
+
+
+for i in collection
+  info=i 
+  studio=info[:studio]
+  gross=info[:worldwide_gross]
+  #pp studio_gross[studio]
+  studio_gross[studio]+=gross
+end
+pp studio_gross  
+
+#  studio_gross[studio]+=gross
+  #initially I was trying to use 'studio_gross[studio]=gross+=gross' above but this threw an error. I changed it to 0 as placeholder values.
+
+#pp studio_gross
+#return studio_gross
+
+
+#for i in studio_gross
+#  gross_list.push(0)
+#end
+#pp gross_list
+#above I was trying to make an array of ints coinciding with the array of hashes constructed above. I was then going to make another iteration after this looping through 'collection' and adding gross values to the corresponding indexes. I have a fuzzy idea on how to do this but haven't tried it yet.
+
+
+#collection.each do |key, value|
+#  if key==
+
+#total=0
+#  answer = {}
+#  for i in collection
+#  total+=i[:worldwide_gross]
+#  answer[i[:studio]]=0
+#  answer[i[:studio]]+=total
+#end
+#return answer
+
+#this was my earlier attempt, but it didn't work. Might be a good idea to come back to it so I'm saving it here.
+
+#  total=0
+#  studios=[]
+#  answer = {}
+#  for i in collection
+#  answer[i[:studio]]='test'
+#    answer.each do |key, value|
+#      studios.push "key"
+#    end
+#  end
+#end
+#pp answer
+#studios
+#return answer
+#I no longer remember what the above was, a fragment from a previous attempt to answer.  
+  
+
   # GOAL: Given an Array of Hashes where each Hash represents a movie,
   # return a Hash that includes the total worldwide_gross of all the movies from
   # each studio.
@@ -67,16 +141,18 @@ end
 
 def movies_with_directors_set(source)
   # GOAL: For each director, find their :movies Array and stick it in a new Array
-  #
-  # INPUT:
-  # * source: An Array of Hashes containing director information including
-  # :name and :movies
-  #
-  # RETURN:
-  #
-  # Array of Arrays containing all of a director's movies. Each movie will need
-  # to have a :director_name key added to it.
+
+array = []
+for i in source
+#pp i
+  info=i
+  name=info[:name]
+  movies=info[:movies]
+  array.push(movies_with_director_key(name, movies))
 end
+return array
+end
+  
 
 # ----------------    End of Your Code Region --------------------
 # Don't edit the following code! Make the methods above work with this method
